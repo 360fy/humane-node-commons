@@ -1,11 +1,12 @@
 import _ from 'lodash';
 
 export default class ExtensibleError extends Error {
-    constructor(message, data) {
+    constructor(statusCode, errorCode, message, data) {
         super(message);
 
-        this._error = true;
-        this.name = this.constructor.name;
+        this._statusCode = data._statusCode || statusCode;
+        this._errorCode = data._errorCode || errorCode;
+        this._status = 'ERROR';
         this.message = message;
 
         if (data && _.isObject(data)) {
