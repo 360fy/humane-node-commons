@@ -11,7 +11,8 @@ class Language {
 }
 
 const Languages = [
-    // new Language('en', 'english', 'English', 0x000, 0x0FF),
+
+    //new Language('en', 'english', 'English', 0x000, 0x0FF),
     new Language('hi', 'hindi', 'हिंदी', 0x900, 0x97F),
     new Language('mr', 'marathi', 'मराठी', 0x900, 0x97F),
     new Language('gu', 'gujarati', 'ગુજરાતી', 0xA80, 0xAFF),
@@ -25,6 +26,7 @@ const Languages = [
     new Language('ne', 'Nepali', 'नेपाली', 0x900, 0x97F),
     new Language('ar', 'Arabic', 'العربية', 0x600, 0x6FF),
     new Language('bh', 'Bhojpuri', 'भोजपुरी', 0x900, 0x97F)
+
 ];
 
 const LanguageMap = (function () {
@@ -38,36 +40,38 @@ const LanguageMap = (function () {
     return map;
 }());
 
-export function detect(_value) {
-    const value = _.trim(_value);
+export default class LanguageDetector {
+    detect(_value) {
+        const value = _.trim(_value);
 
-    if (!value || _.isEmpty(value)) {
-        return null;
-    }
+        if (!value || _.isEmpty(value)) {
+            return null;
+        }
 
-    const detectedLanguageMap = {};
+        const detectedLanguageMap = {};
 
-    for (let i = 0; i < value.length; i++) {
-        const charCode = value.charCodeAt(i);
+        for (let i = 0; i < value.length; i++) {
+            const charCode = value.charCodeAt(i);
 
-        for (let j = 0; j < _.size(Languages); j++) {
-            const lang = Languages[j];
-            if (charCode >= lang.startChar && charCode <= lang.endChar) {
-                detectedLanguageMap[lang.code] = (detectedLanguageMap[lang.code] || 0) + 1;
+            for (let j = 0; j < _.size(Languages); j++) {
+                const lang = Languages[j];
+                if (charCode >= lang.startChar && charCode <= lang.endChar) {
+                    detectedLanguageMap[lang.code] = (detectedLanguageMap[lang.code] || 0) + 1;
+                }
             }
         }
-    }
 
-    if (_.size(detectedLanguageMap) !== 1 && detectedLanguageMap.en) {
-        delete detectedLanguageMap.en;
-    }
+        if (_.size(detectedLanguageMap) !== 1 && detectedLanguageMap.en) {
+            delete detectedLanguageMap.en;
+        }
 
-    // convert languages into array and sort descending by count
-    // map them to Language object
-    return _(detectedLanguageMap)
-      .keys()
-      .map(code => ({code, count: detectedLanguageMap[code]}))
-      .sortBy(lang => 1.0 / lang.count)
-      .map(lang => LanguageMap[lang.code])
-      .value();
+        // convert languages into array and sort descending by count
+        // map them to Language object
+        return _(detectedLanguageMap)
+          .keys()
+          .map(code => ({code, count: detectedLanguageMap[code]}))
+          .sortBy(lang => 1.0 / lang.count)
+          .map(lang => LanguageMap[lang.code])
+          .value();
+    }
 }
