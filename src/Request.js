@@ -11,11 +11,7 @@ export default (config) => {
         keepAliveMsecs: config.keepAliveTimeout || 5000
     });
 
-    return Promise.promisify(Request.defaults({
-        json: _.isUndefined(config.json) ? true : config.json,
-        gzip: _.isUndefined(config.gzip) ? true : config.gzip,
-        agent: keepAliveAgent,
-        time: config.logLevel === 'trace',
-        baseUrl: config.baseUrl
-    }));
+    const params = _.defaultsDeep(config, {json: true, gzip: true, agent: keepAliveAgent, time: config.logLevel === 'trace'});
+
+    return Promise.promisify(Request.defaults(params));
 };
