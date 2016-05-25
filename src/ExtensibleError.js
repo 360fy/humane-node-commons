@@ -1,6 +1,5 @@
 import _ from 'lodash';
 
-/* eslint-disable no-underscore-dangle */
 export default class ExtensibleError extends Error {
     constructor(statusCode, errorCode, message, data) {
         super(message);

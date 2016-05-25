@@ -13,19 +13,19 @@
   "author": "Shailendra Sharma",
   "license": "MIT",
   "dependencies": {
-    "bluebird": "^3.3.5",
+    "bluebird": "^3.4.0",
     "hiredis": "^0.4.1",
-    "lodash": "^4.12.0",
+    "lodash": "^4.13.1",
     "redis": "^2.6.0-2",
     "redis-sentinel": "^0.3.3",
     "request": "^2.72.0"
   },
   "devDependencies": {
-    "babel-core": "^6.8.0",
-    "babel-plugin-transform-runtime": "^6.8.0",
+    "babel-core": "^6.9.0",
+    "babel-plugin-transform-runtime": "^6.9.0",
     "babel-preset-node5": "^11.1.0",
-    "eslint": "^2.9.0",
-    "eslint-config-360fy": "^1.1.5",
+    "eslint": "^2.10.2",
+    "eslint-config-360fy": "^1.1.6",
     "eslint-plugin-react": "^5.1.1"
   },
   "eslintConfig": {
