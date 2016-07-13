@@ -4,8 +4,8 @@ export default class ExtensibleError extends Error {
     constructor(statusCode, errorCode, message, data) {
         super(message);
 
-        this._statusCode = data._statusCode || statusCode;
-        this._errorCode = data._errorCode || errorCode;
+        this._statusCode = data && data._statusCode || statusCode;
+        this._errorCode = data && data._errorCode || errorCode;
         this._status = 'ERROR';
         this.message = message;
 
