@@ -1,10 +1,18 @@
 import _ from 'lodash';
 import Http from 'http';
+import Https from 'https';
 import Promise from 'bluebird';
 import Request from 'request';
 
 export default (config) => {
-    const keepAliveAgent = new Http.Agent({
+    let Agent = null;
+    if (config.https) {
+        Agent = Https.Agent;
+    } else {
+        Agent = Http.Agent;
+    }
+
+    const keepAliveAgent = new Agent({
         keepAlive: true,
         maxSockets: config.maxSockets || 10,
         maxFreeSockets: config.maxFreeSockets || 5,
