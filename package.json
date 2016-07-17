@@ -11,7 +11,7 @@
     "prepublish": "npm run compile"
   },
   "author": "Shailendra Sharma",
-  "license": "MIT",
+  "license": "LGPL",
   "dependencies": {
     "bluebird": "3.4.0",
     "hiredis": "0.4.1",
