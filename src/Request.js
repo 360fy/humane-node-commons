@@ -50,9 +50,9 @@ export function handleResponse(response, extraOkayStatusCodes, operation, logLev
         response = response[0];
     }
 
-    const isOkay = extraOkayStatusCodes && extraOkayStatusCodes[response.status];
+    const isOkay = extraOkayStatusCodes && extraOkayStatusCodes[response.statusCode];
 
-    if (_.get(LogLevels, logLevel) <= _.get(LogLevels, DEBUG_LOG_LEVEL) || (response.statusCode >= 400 && !isOkay && response.request.method !== HEAD_HTTP_METHOD)) {
+    if (_.get(LogLevels, logLevel) <= _.get(LogLevels, DEBUG_LOG_LEVEL) || (response.statusCode >= 500 && !isOkay && response.request.method !== HEAD_HTTP_METHOD)) {
         console.log();
         console.log(Chalk.blue('------------------------------------------------------'));
         console.log(Chalk.blue.bold(`${response.request.method} ${response.request.href}`));
@@ -69,7 +69,7 @@ export function handleResponse(response, extraOkayStatusCodes, operation, logLev
         console.log();
     }
 
-    if (response.statusCode < 400 || isOkay) {
+    if (response.statusCode < 500 || isOkay) {
         return _.extend({
             _statusCode: response.statusCode,
             _status: response.statusCode < 400 ? SUCCESS_STATUS : FAIL_STATUS,
