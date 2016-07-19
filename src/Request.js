@@ -41,7 +41,7 @@ export function builder(config) {
     return Promise.promisify(Request.defaults(params));
 }
 
-export function handleResponse(response, okStatusCodes, operation, logLevel) {
+export function handleResponse(response, extraOkayStatusCodes, operation, logLevel) {
     if (!response) {
         return Promise.reject('ERROR: No Response');
     }
@@ -50,7 +50,9 @@ export function handleResponse(response, okStatusCodes, operation, logLevel) {
         response = response[0];
     }
 
-    if (_.get(LogLevels, logLevel) <= _.get(LogLevels, DEBUG_LOG_LEVEL) || (response.statusCode >= 400 && !_.get(okStatusCodes, response.statusCode) && response.request.method !== HEAD_HTTP_METHOD)) {
+    const isOkay = extraOkayStatusCodes && extraOkayStatusCodes[response.status];
+
+    if (_.get(LogLevels, logLevel) <= _.get(LogLevels, DEBUG_LOG_LEVEL) || (response.statusCode >= 400 && !isOkay && response.request.method !== HEAD_HTTP_METHOD)) {
         console.log();
         console.log(Chalk.blue('------------------------------------------------------'));
         console.log(Chalk.blue.bold(`${response.request.method} ${response.request.href}`));
@@ -67,7 +69,7 @@ export function handleResponse(response, okStatusCodes, operation, logLevel) {
         console.log();
     }
 
-    if (response.statusCode < 400 || _.get(okStatusCodes, response._statusCode)) {
+    if (response.statusCode < 400 || isOkay) {
         return _.extend({
             _statusCode: response.statusCode,
             _status: response.statusCode < 400 ? SUCCESS_STATUS : FAIL_STATUS,
