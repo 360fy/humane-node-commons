@@ -1,6 +1,6 @@
 {
   "name": "humane-node-commons",
-  "version": "1.3.2",
+  "version": "1.4.0",
   "description": "Commons module for humane discovery",
   "repository": "git@github.com:360fy/humane-node-commons.git",
   "main": "./lib/index.js",
