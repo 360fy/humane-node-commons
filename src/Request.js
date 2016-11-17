@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import Promise from 'bluebird';
 import Request from 'request';
-import InternalServiceError from './InternalServiceError';
 import Chalk from 'chalk';
+import InternalServiceError from './InternalServiceError';
 
 const SUCCESS_STATUS = 'SUCCESS';
 const FAIL_STATUS = 'FAIL';
@@ -78,13 +78,13 @@ export function handleResponse(response, extraOkayStatusCodes, operation, logLev
     }
 
     throw new InternalServiceError('Internal Service Error', {
-        _statusCode: response.statusCode, details: response.body && response.body.error || response.body
+        _statusCode: response.statusCode, details: (response.body && response.body.error) || response.body
     });
 }
 
 export function handleResponseArray(responses, okStatusCodes, operation, logLevel = INFO_LOG_LEVEL) {
     return Promise
-      .all(_.map(responses, response => {
+      .all(_.map(responses, (response) => {
           let promise = null;
           try {
               promise = Promise.resolve(handleResponse(response, okStatusCodes, operation, logLevel));
@@ -94,7 +94,7 @@ export function handleResponseArray(responses, okStatusCodes, operation, logLeve
 
           return promise.reflect();
       }))
-      .map(inspection => {
+      .map((inspection) => {
           if (inspection.isFulfilled()) {
               return inspection.value();
           }

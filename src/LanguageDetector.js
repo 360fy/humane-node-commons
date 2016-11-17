@@ -32,7 +32,7 @@ const Languages = [
 const LanguageMap = (function () {
     const map = {};
 
-    _.forEach(Languages, lang => {
+    _.forEach(Languages, (lang) => {
         map[lang.code] = {code: lang.code, name: lang.name, unicode: lang.unicode};
         return true;
     });
@@ -41,7 +41,7 @@ const LanguageMap = (function () {
 }());
 
 export default class LanguageDetector {
-    detect(_value) {
+    static detect(_value) {
         const value = _.trim(_value);
 
         if (!value || _.isEmpty(value)) {
@@ -50,10 +50,10 @@ export default class LanguageDetector {
 
         const detectedLanguageMap = {};
 
-        for (let i = 0; i < value.length; i++) {
+        for (let i = 0; i < value.length; i += 1) {
             const charCode = value.charCodeAt(i);
 
-            for (let j = 0; j < _.size(Languages); j++) {
+            for (let j = 0; j < _.size(Languages); j += 1) {
                 const lang = Languages[j];
                 if (charCode >= lang.startChar && charCode <= lang.endChar) {
                     detectedLanguageMap[lang.code] = (detectedLanguageMap[lang.code] || 0) + 1;
